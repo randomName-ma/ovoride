@@ -533,6 +533,11 @@ function convertToReadableSize($size)
 
 function frontendImage($sectionName, $image, $size = null, $seo = false)
 {
+
+    if (filter_var($image, FILTER_VALIDATE_URL)) {
+        // إذا كان رابط صحيح، ارجع الرابط كما هو
+        return $image;
+    }
     if ($seo) {
         return getImage('assets/images/frontend/' . $sectionName . '/seo/' . $image, $size);
     }
