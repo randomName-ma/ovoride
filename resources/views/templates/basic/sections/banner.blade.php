@@ -24,7 +24,7 @@
             </div>
             <div class="col-xxl-10">
                 <div class="banner-thumb wow fadeInUp" data-wow-duration="0.5s" data-wow-delay="0.5s">
-                    <img src="{{ frontendImage('banner', @$bannerContent->image) }}" alt="image">
+                    <img src="https://res.cloudinary.com/dlkjp0nqe/image/upload/v1753714270/67360561cda221731593569_nbk24q.png" alt="image">
                 </div>
             </div>
         </div>

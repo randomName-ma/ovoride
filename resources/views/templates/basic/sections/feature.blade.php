@@ -1,6 +1,11 @@
 @php
     $featureContent = @getContent('feature.content', true)->data_values;
     $featureElements = @getContent('feature.element', orderById: true);
+    $fe=[
+        "https://res.cloudinary.com/dlkjp0nqe/image/upload/v1753716351/67383d9a2a2741731739034_ha5pjr.png",
+        "https://res.cloudinary.com/dlkjp0nqe/image/upload/v1753716352/67383d9c02bae1731739036_pkkynk.png",
+        "https://res.cloudinary.com/dlkjp0nqe/image/upload/v1753716349/67383d9c2341d1731739036_gtvtug.png"
+];
 @endphp
 
 <section class="feature-section py-120">
@@ -19,13 +24,13 @@
                 <div class="feature-thumb">
                     <div class="feature-thumb__item">
                         <span class="feature-thumb__icon wow fadeIn" data-wow-duration="0.5s" data-wow-delay="0.5s"><i class="fa-solid fa-arrow-right"></i></span>
-                        <img class=" wow fadeInDown" data-wow-duration="0.5s" data-wow-delay="0.5s" src="{{ frontendImage('feature', @$featureContent->image_one, '672x300') }}" alt="image">
+                        <img class=" wow fadeInDown" data-wow-duration="0.5s" data-wow-delay="0.5s" src="{{$fe[0] }}" alt="image">
                     </div>
                     <div class="feature-thumb__item wow fadeInLeft" data-wow-duration="0.5s" data-wow-delay="0.5s">
-                        <img src="{{ frontendImage('feature', @$featureContent->image_two, '324x300') }}" alt="image">
+                        <img src="{{$fe[1]}}" alt="image">
                     </div>
                     <div class="feature-thumb__item wow fadeInRight" data-wow-duration="0.5s" data-wow-delay="0.5s">
-                        <img src="{{ frontendImage('feature', @$featureContent->image_three, '324x300') }}" alt="image">
+                        <img src="{{$fe[2] }}" alt="image">
                     </div>
                 </div>
             </div>

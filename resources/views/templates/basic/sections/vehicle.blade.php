@@ -1,6 +1,12 @@
 @php
     $vechileContent = @getContent('vehicle.content', true)->data_values;
     $vehicleElements = @getContent('vehicle.element', orderById: true);
+    $vec=[
+        "https://res.cloudinary.com/dlkjp0nqe/image/upload/v1753712902/6738487c041381731741820_ihhamw.png",
+        "https://res.cloudinary.com/dlkjp0nqe/image/upload/v1753712890/673848886402b1731741832_qyhmnz.png",
+        "https://res.cloudinary.com/dlkjp0nqe/image/upload/v1753712897/67384898146d31731741848_hxzgxa.png",
+        "https://res.cloudinary.com/dlkjp0nqe/image/upload/v1753712892/673848a1df2a21731741857_hh8vfk.png"
+]
 @endphp
 
 <section class="vehicles-section pb-120">
@@ -15,15 +21,15 @@
             </div>
         </div>
         <div class="row gy-3 align-items-center">
-            @foreach ($vehicleElements as $vehicleElement)
+            @for($i=0 ;$i<4;$i++ )
                 <div class="col-md-6">
                     <div class="vehicles-item">
-                        <img src="{{ frontendImage('vehicle', @$vehicleElement->data_values->image, '672x465') }}"
+                        <img src="{{$vec[$i]}}" width="672" height="465"
                             alt="image">
                         <div class="vehicles-item__overlay wow fadeInUp" data-wow-duration="0.5s" data-wow-delay="0.5s"></div>
                         <div class="vehicles-item__content wow fadeInDown" data-wow-duration="0.6s" data-wow-delay="0.6s">
-                            <h3 class="vehicles-item__title">{{ __(@$vehicleElement->data_values->title) }}</h3>
-                            <a class="vehicles-item__icon" href="{{ @$vehicleElement->data_values->url }}">
+                            <h3 class="vehicles-item__title">{{ __(@$vehicleElements[$i]->data_values->title) }}</h3>
+                            <a class="vehicles-item__icon" href="{{ @$vehicleElements[$i]->data_values->url }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="" height=""
                                     viewBox="0 0 40 40" fill="none">
                                     <path
@@ -39,7 +45,7 @@
                         </div>
                     </div>
                 </div>
-            @endforeach
+            @endfor
         </div>
     </div>
 </section>
