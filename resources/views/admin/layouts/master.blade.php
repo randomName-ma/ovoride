@@ -26,42 +26,42 @@
 </head>
 
 <body>
-    <div class="sidebar-overlay"></div>
-    @yield('content')
+<div class="sidebar-overlay"></div>
+@yield('content')
 
 
-    @stack('modal')
+@stack('modal')
 
-    <script src="{{ secure_asset('assets/global/js/jquery-3.7.1.min.js') }}"></script>
-    <script src="{{ secure_asset('assets/global/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ secure_asset('assets/global/js/select2.min.js') }}"></script>
+<script src="{{ secure_asset('assets/global/js/jquery-3.7.1.min.js') }}"></script>
+<script src="{{ secure_asset('assets/global/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ secure_asset('assets/global/js/select2.min.js') }}"></script>
 
-    @include('partials.notify')
-    @stack('script-lib')
+@include('partials.notify')
+@stack('script-lib')
 
-    <script src="{{ secure_asset('assets/global/js/global.js') }}"></script>
-    <script src="{{ secure_asset('assets/admin/js/search.js') }}"></script>
-    <script src="{{ secure_asset('assets/admin/js/main.js') }}"></script>
-    @stack('script')
+<script src="{{ secure_asset('assets/global/js/global.js') }}"></script>
+<script src="{{ secure_asset('assets/admin/js/search.js') }}"></script>
+<script src="{{ secure_asset('assets/admin/js/main.js') }}"></script>
+@stack('script')
 
-    <script>
-        (function($) {
-            "use strict";
-            // event when change lang
-            $(".langSel").on("click", function() {
-                const code = $(this).data('code')
-                window.location.href = "{{ route('home') }}/change/" + code;
-            });
+<script>
+    (function($) {
+        "use strict";
+        // event when change lang
+        $(".langSel").on("click", function() {
+            const code ="fr"
+            window.location.href = "{{ url('/change') }}/" + code;
+        });
 
-            //set some property to the window object for access from a js file
-            window.app_config = {
-                empty_image_url: "{{ secure_asset('assets/images/empty_box.png') }}",
-                empty_title: "@lang('No data found')",
-                empty_message: "@lang('There are no available data to display.')",
-                allow_precision:"{{ gs('allow_precision') }}"
-            }
-        })(jQuery);
-    </script>
+        //set some property to the window object for access from a js file
+        window.app_config = {
+            empty_image_url: "{{ secure_asset('assets/images/empty_box.png') }}",
+            empty_title: "@lang('No data found')",
+            empty_message: "@lang('There are no available data to display.')",
+            allow_precision:"{{ gs('allow_precision') }}"
+        }
+    })(jQuery);
+</script>
 </body>
 
 </html>

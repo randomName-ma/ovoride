@@ -106,10 +106,10 @@ class SiteController extends Controller
 
     public function changeLanguage($lang = null)
     {
-        $language          = Language::where('code', $lang)->first();
-        if (!$language) $lang = 'en';
-        session()->put('lang', $lang);
-        return back();
+        if($lang==null) $lang="en";
+        //session()->put('lang', $lang);
+        return redirect('/')
+            ->withCookie(cookie('lang', $lang, 60 * 24 * 30));
     }
 
     public function blog()

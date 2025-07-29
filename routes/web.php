@@ -40,14 +40,15 @@ Route::get('/testCookie', function () {
         <html>
             <body>
                 <h1>{$message}</h1>
-                <a href="/lang/ar">العربية</a> |
+                <a href="/lang/ja">العربية</a> |
                 <a href="/lang/en">English</a>
+                 <a href="/lang/en">English</a>
             </body>
         </html>
     HTML;
 });
 
 Route::get('/lang/{lang}', function ($lang) {
-    return redirect('/testCookie')
+    return redirect('/clear')
         ->withCookie(cookie('lang', $lang, 60 * 24 * 30)); // تخزين الكوكي لمدة شهر
 });
