@@ -61,7 +61,7 @@ class UserController extends Controller
 
         $validator = Validator::make($request->all(), [
             'country_code' => 'required|in:' . $countryCodes,
-            'country'      => 'required|in:' . $countries,
+            'country'      => 'required',
             'mobile_code'  => 'required|in:' . $mobileCodes,
             'username'     => 'required|unique:users|min:6',
             'mobile'       => ['required', 'regex:/^([0-9]*)$/', Rule::unique('users')->where('dial_code', $request->mobile_code)],

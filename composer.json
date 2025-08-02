@@ -20,6 +20,7 @@
         "laravel/framework": "^11.32.0",
         "laravel/sanctum": "^4.0",
         "laravel/socialite": "^5.16",
+        "laravel/telescope": "^5.10",
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.5",
         "mailjet/mailjet-apiv3-php": "^1.6",
