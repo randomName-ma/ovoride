@@ -40,7 +40,10 @@ Route::namespace('Api\User')->group(function () {
         });
     });
 
-    Route::middleware(['auth:sanctum', 'token.permission:auth_token'])->group(function () {
+    Route::middleware(['auth:sanctum'
+            //'token.permission:auth_token'
+    ]
+    )->group(function () {
 
         Route::post('user-data-submit', 'UserController@userDataSubmit');
 
@@ -160,12 +163,12 @@ Route::namespace('Api\Driver')->prefix('driver')->group(function () {
                     Route::post('delete-account', 'accountDelete');
 
                     Route::post('pusher/auth/{socketId}/{channelName}', 'pusher');
-                    
+
                     //Driver Verification
                     Route::get('driver-verification', 'driverVerification');
                     Route::post('driver-verification', 'driverVerificationStore');
 
-                    //vehicle verification 
+                    //vehicle verification
                     Route::get('vehicle-verification', 'vehicleVerification');
                     Route::post('vehicle-verification', 'vehicleVerificationStore');
 

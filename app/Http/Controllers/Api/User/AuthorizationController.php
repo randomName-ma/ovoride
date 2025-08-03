@@ -4,12 +4,20 @@ namespace App\Http\Controllers\Api\User;
 
 use App\Constants\Status;
 use App\Http\Controllers\Controller;
+use App\Services\SmsSyrianService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class AuthorizationController extends Controller
 {
+
+    protected SmsSyrianService $smsSyrianService;
+    public function __construct(sMSSyrianService $smsSyrianService)
+    {
+        $this->smsSyrianService = $smsSyrianService;
+    }
+
     protected function checkCodeValidity($user, $addMin = 2)
     {
         if (!$user->ver_code_send_at) {
@@ -38,16 +46,12 @@ class AuthorizationController extends Controller
             $notify[] = 'You are already verified';
             return apiResponse("already_verified", "error", $notify);
         }
-
-        if (!$this->checkCodeValidity($user) && ($type != '2fa') && ($type != 'ban')) {
-            $user->ver_code         = verificationCode(6);
-            $user->ver_code_send_at = Carbon::now();
-            $user->save();
-            notify($user, $notifyTemplate, [
-                'code' => $user->ver_code
-            ], [$type]);
-        }
-
+     //   \Log::info('+963'. $user->mobile);
+        $user->ver_code         = verificationCode(6);
+        $user->ver_code_send_at = Carbon::now();
+        $user->save();
+        $this->smsSyrianService->SendtoUser($user,$user->mobile);
+        //$this->smsSyrianService->sendSMS('+963'. $user->mobile,$user->ver_code,'your verification code to mishwar is');
         $notify[] = 'Verify your account';
         return apiResponse("code_sent", "success", $notify);
     }
@@ -68,7 +72,8 @@ class AuthorizationController extends Controller
         $user->ver_code         = verificationCode(6);
         $user->ver_code_send_at = Carbon::now();
         $user->save();
-
+        $this->smsSyrianService->SendtoUser($user,$user->mobile);
+       // $this->smsSyrianService->sendSMS('+963'. $user->mobile,$user->ver_code,'your verification code to mishwar is');
         if ($type == 'email') {
             $type           = 'email';
             $notifyTemplate = 'EVER_CODE';

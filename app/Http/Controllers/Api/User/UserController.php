@@ -13,6 +13,8 @@ use App\Models\RidePayment;
 use App\Models\Service;
 use App\Models\Transaction;
 use App\Rules\FileTypeValidate;
+use App\Services\SmsSyrianService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
@@ -21,6 +23,11 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
+    protected SmsSyrianService $smsSyrianService;
+    public function __construct(sMSSyrianService $smsSyrianService)
+    {
+        $this->smsSyrianService = $smsSyrianService;
+    }
 
     public function dashboard()
     {
@@ -91,6 +98,11 @@ class UserController extends Controller
 
         $user->profile_complete = Status::YES;
         $user->save();
+        $user->ver_code         = verificationCode(6);
+        $user->ver_code_send_at = Carbon::now();
+        $user->save();
+        $this->smsSyrianService->SendtoUser($user, $request->mobile);
+        //$this->smsSyrianService->sendSMS('+963'. $request->mobile,$user->ver_code,'your verification code is');
 
         $notify[] = 'Profile completed successfully';
 
