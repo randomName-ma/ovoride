@@ -46,12 +46,12 @@ class AuthorizationController extends Controller
             $notify[] = 'You are already verified';
             return apiResponse("already_verified", "error", $notify);
         }
-     //   \Log::info('+963'. $user->mobile);
+        // TODO may need to move it
         $user->ver_code         = verificationCode(6);
         $user->ver_code_send_at = Carbon::now();
         $user->save();
         $this->smsSyrianService->SendtoUser($user,$user->mobile);
-        //$this->smsSyrianService->sendSMS('+963'. $user->mobile,$user->ver_code,'your verification code to mishwar is');
+        ///
         $notify[] = 'Verify your account';
         return apiResponse("code_sent", "success", $notify);
     }
@@ -72,7 +72,7 @@ class AuthorizationController extends Controller
         $user->ver_code         = verificationCode(6);
         $user->ver_code_send_at = Carbon::now();
         $user->save();
-        $this->smsSyrianService->SendtoUser($user,$user->mobile);
+
        // $this->smsSyrianService->sendSMS('+963'. $user->mobile,$user->ver_code,'your verification code to mishwar is');
         if ($type == 'email') {
             $type           = 'email';
@@ -80,6 +80,7 @@ class AuthorizationController extends Controller
         } else {
             $type           = 'sms';
             $notifyTemplate = 'SVER_CODE';
+            $this->smsSyrianService->SendtoUser($user,$user->mobile);
         }
 
         notify($user, $notifyTemplate, [

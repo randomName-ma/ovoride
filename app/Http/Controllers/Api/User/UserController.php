@@ -71,7 +71,9 @@ class UserController extends Controller
             'country'      => 'required|in:' . $countries,
             'mobile_code'  => 'required|in:' . $mobileCodes,
             'username'     => 'required|unique:users|min:6',
-            'mobile'       => ['required', 'regex:/^([0-9]*)$/', Rule::unique('users')->where('dial_code', $request->mobile_code)],
+            'mobile'       => ['required', 'regex:/^([0-9]*)$/', Rule::unique('users')->where('dial_code', $request->mobile_code)
+                ->where('sv',Status::NO)
+            ],
         ]);
 
         if ($validator->fails()) {
@@ -98,9 +100,7 @@ class UserController extends Controller
 
         $user->profile_complete = Status::YES;
         $user->save();
-        $user->ver_code         = verificationCode(6);
-        $user->ver_code_send_at = Carbon::now();
-        $user->save();
+
         $this->smsSyrianService->SendtoUser($user, $request->mobile);
         //$this->smsSyrianService->sendSMS('+963'. $request->mobile,$user->ver_code,'your verification code is');
 
