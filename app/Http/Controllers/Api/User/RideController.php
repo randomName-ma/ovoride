@@ -187,9 +187,10 @@ class RideController extends Controller
 
         //sent pusher event berfore find the dirver and sent notification to the driver
         // it is help to optimize loading response time
-        event(new EventsRide("rider-user-$ride->user_id", "NEW_RIDE_CREATED", [
-            'ride' => $ride,
-        ]));
+        //todo enable pusher
+//        event(new EventsRide("rider-user-$ride->user_id", "NEW_RIDE_CREATED", [
+//            'ride' => $ride,
+//        ]));
 
         $drivers = Driver::active()
             ->where('online_status', Status::YES)
@@ -214,14 +215,14 @@ class RideController extends Controller
         $driverImagePath = getFilePath('driver');
         $userImagePath   = getFilePath('user');
 
-        foreach ($drivers as $driver) {
-            notify($driver, 'NEW_RIDE', $shortCode);
-            event(new EventsRide("rider-driver-$driver->id", "NEW_RIDE", [
-                'ride'              => $ride,
-                'driver_image_path' => $driverImagePath,
-                'user_image_path'   => $userImagePath,
-            ]));
-        }
+//        foreach ($drivers as $driver) {
+//            notify($driver, 'NEW_RIDE', $shortCode);
+//            event(new EventsRide("rider-driver-$driver->id", "NEW_RIDE", [
+//                'ride'              => $ride,
+//                'driver_image_path' => $driverImagePath,
+//                'user_image_path'   => $userImagePath,
+//            ]));
+//        }
         $notify[] = 'Ride created successfully';
         return apiResponse('ride_create_success', 'success', $notify, [
             'ride' => $ride

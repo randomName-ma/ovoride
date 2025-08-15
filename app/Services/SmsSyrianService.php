@@ -35,7 +35,6 @@ class SmsSyrianService
     public function sendSMS($phone, $otp, $message)
     {
 
-        \Log::info($phone);
         $requestBody = [
             'message' => sprintf('%s %d', $message, $otp),
             'to' => $phone,
@@ -50,7 +49,7 @@ class SmsSyrianService
                 ],
                 'json' => $requestBody,
             ]);
-            \Log::info($response->getBody());
+
             return $response->getBody()->getContents();
         } catch (RequestException $e) {
             throw new \Exception('Failed to send SMS: ' . $e->getMessage());
