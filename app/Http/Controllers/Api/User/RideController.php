@@ -214,7 +214,7 @@ class RideController extends Controller
 
         $driverImagePath = getFilePath('driver');
         $userImagePath   = getFilePath('user');
-
+//todoh
 //        foreach ($drivers as $driver) {
 //            notify($driver, 'NEW_RIDE', $shortCode);
 //            event(new EventsRide("rider-driver-$driver->id", "NEW_RIDE", [

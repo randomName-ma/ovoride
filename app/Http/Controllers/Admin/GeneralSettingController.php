@@ -54,6 +54,7 @@ class GeneralSettingController extends Controller
             'operating_country.*'     => ['required', Rule::in($countries->keys()->toArray())],
             'tips_suggest_amount'     => ['required', 'array', 'min:1', 'max:5'],
             'tips_suggest_amount.*'   => ['required', 'numeric'],
+            'syrian_per_dollar' => ['required','integer']
         ]);
 
         $timezones = timezone_identifiers_list();
@@ -78,7 +79,7 @@ class GeneralSettingController extends Controller
         $general->negative_balance_driver = $request->negative_balance_driver;
         $general->tips_suggest_amount     = $request->tips_suggest_amount;
         $general->operating_country       = $countries->only($request->operating_country)->toArray();
-
+        $general->syrian_per_dollar       = $request->syrian_per_dollar;
         if ($request->hasFile('preloader_image')) {
             try {
                 $general->preloader_image = fileUploader($request->preloader_image, getFilePath('preloader'), old: $general->preloader_image);

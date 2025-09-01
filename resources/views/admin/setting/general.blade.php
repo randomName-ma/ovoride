@@ -230,6 +230,16 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>@lang('Syrian Per Dollar')</label>
+                            <div class="input--group input-group">
+                                <input class="form-control" name="syrian_per_dollar" type="number" step="any"
+                                       value="{{ getAmount(gs('syrian_per_dollar')) }}" required min="0">
+                                <span class="input-group-text">@lang('SYP')</span>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="col-12">
                         <div class="my-4">

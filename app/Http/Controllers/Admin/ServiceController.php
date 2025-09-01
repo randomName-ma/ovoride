@@ -26,8 +26,8 @@ class ServiceController extends Controller
             'city_recommend_fare'       => 'required|numeric|gte:city_min_fare|lte:city_max_fare',
             'city_fare_commission'      => 'required|numeric|gt:0|lt:100',
             'intercity_min_fare'        => 'required|numeric|gt:0',
-            'intercity_max_fare'        => 'required|numeric|gt:intercity_min_fare',
-            'intercity_recommend_fare'  => 'required|numeric|gte:intercity_min_fare|lte:intercity_max_fare',
+            'intercity_max_fare'        => 'required|numeric',
+            'intercity_recommend_fare'  => 'required|numeric',
             'intercity_fare_commission' => 'required|numeric|gt:0|lt:100',
         ]);
 
