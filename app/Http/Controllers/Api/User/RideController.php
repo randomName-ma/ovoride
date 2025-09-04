@@ -76,6 +76,21 @@ class RideController extends Controller
 
         return apiResponse("ride_data", 'success', data: $data);
     }
+    private function convertDurationToMinutes($durationText)
+    {
+        $minutes = 0;
+
+        // مثال: "1 hour 10 mins" أو "11 mins"
+        if (preg_match('/(\d+)\s*hour/', $durationText, $matches)) {
+            $minutes += ((int) $matches[1]) * 60;
+        }
+
+        if (preg_match('/(\d+)\s*min/', $durationText, $matches)) {
+            $minutes += (int) $matches[1];
+        }
+
+        return $minutes;
+    }
 
     public function create(Request $request)
     {
@@ -90,7 +105,7 @@ class RideController extends Controller
             'payment_type'          => ['required', Rule::in(Status::PAYMENT_TYPE_GATEWAY, Status::PAYMENT_TYPE_CASH)],
             'gateway_currency_id'   => $request->payment_type == Status::PAYMENT_TYPE_GATEWAY ? 'required|exists:gateway_currencies,id' : 'nullable',
         ]);
-
+$price_of_minute=0.1;
         if ($validator->fails()) {
             return apiResponse("validation_error", 'error', $validator->errors()->all());
         }
@@ -128,6 +143,8 @@ class RideController extends Controller
         $destinationZone = $zoneData['destination_zone'];
         $distance        = $googleMapData['distance'];
         $user            = auth()->user();
+        $durationText = $data['duration'];
+        $data['expected_minutes'] = $this->convertDurationToMinutes($durationText);
 
         if ($pickUpZone->country !=  $destinationZone->country) {  // can not create ride between two country
             $notify[] = "The pickup zone and destination zone must be within the same country.";
@@ -135,15 +152,15 @@ class RideController extends Controller
         }
 
         if ($pickUpZone->id == $destinationZone->id) {  // city ride
-            $data['min_amount']            = getAmount($service->city_min_fare * $distance);
-            $data['max_amount']            = getAmount($service->city_max_fare * $distance);
-            $data['recommend_amount']      = getAmount($service->city_recommend_fare * $distance);
+            $data['min_amount']            = getAmount($service->city_min_fare * $distance) + $data['expected_minutes']*$price_of_minute ;
+            $data['max_amount']            = getAmount($service->city_max_fare * $distance) + $data['expected_minutes']*$price_of_minute;
+            $data['recommend_amount']      = getAmount($service->city_recommend_fare * $distance) + $data['expected_minutes']*$price_of_minute;
             $data['ride_type']             = Status::CITY_RIDE;
             $data['commission_percentage'] = getAmount($service->city_fare_commission);
         } else {
-            $data['min_amount']            = getAmount($service->intercity_min_fare * $distance);
-            $data['max_amount']            = getAmount($service->intercity_max_fare * $distance);
-            $data['recommend_amount']      = getAmount($service->intercity_recommend_fare * $distance);
+            $data['min_amount']            = getAmount($service->intercity_min_fare * $distance)+ $data['expected_minutes']*$price_of_minute;
+            $data['max_amount']            = getAmount($service->intercity_max_fare * $distance)+ $data['expected_minutes']*$price_of_minute;
+            $data['recommend_amount']      = getAmount($service->intercity_recommend_fare * $distance)+ $data['expected_minutes']*$price_of_minute;
             $data['ride_type']             = Status::INTER_CITY_RIDE;
             $data['commission_percentage'] = getAmount($service->intercity_fare_commission);
         }
@@ -165,7 +182,7 @@ class RideController extends Controller
         $ride->destination           = @$data['destination_address'];
         $ride->destination_latitude  = $request->destination_latitude;
         $ride->destination_longitude = $request->destination_longitude;
-        $ride->ride_type             = $data['ride_type'];
+        $ride->ride_type             = $data['ride_type'] ;
         $ride->note                  = $request->note;
         $ride->number_of_passenger   = $request->number_of_passenger;
         $ride->distance              = $distance;
