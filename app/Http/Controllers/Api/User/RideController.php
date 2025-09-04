@@ -87,7 +87,6 @@ class RideController extends Controller
             'destination_longitude' => 'required|numeric',
             'note'                  => 'nullable',
             'number_of_passenger'   => 'required|integer',
-            'offer_amount'          => 'required|numeric',
             'payment_type'          => ['required', Rule::in(Status::PAYMENT_TYPE_GATEWAY, Status::PAYMENT_TYPE_CASH)],
             'gateway_currency_id'   => $request->payment_type == Status::PAYMENT_TYPE_GATEWAY ? 'required|exists:gateway_currencies,id' : 'nullable',
         ]);
@@ -154,10 +153,7 @@ class RideController extends Controller
             return apiResponse('limit_error', 'error', $notify);
         }
 
-        if ($request->offer_amount < $data['min_amount'] || $request->offer_amount > $data['max_amount']) {
-            $notify[] = 'The offer amount must be a minimum of ' . showAmount($data['min_amount']) . ' to a maximum of ' . showAmount($data['max_amount']);
-            return apiResponse('limit_error', 'error', $notify);
-        }
+
 
         $ride                        = new Ride();
         $ride->uid                   = getTrx(10);
@@ -179,7 +175,7 @@ class RideController extends Controller
         $ride->recommend_amount      = $data['recommend_amount'];
         $ride->min_amount            = $data['min_amount'];
         $ride->max_amount            = $data['max_amount'];
-        $ride->amount                = $request->offer_amount;
+        $ride->amount                = $ride->recommend_amount;
         $ride->payment_type          = $request->payment_type;
         $ride->commission_percentage = $data['commission_percentage'];
         $ride->gateway_currency_id   = $request->payment_type == Status::PAYMENT_TYPE_GATEWAY ? $request->gateway_currency_id : 0;
