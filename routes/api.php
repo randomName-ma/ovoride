@@ -240,3 +240,10 @@ Route::namespace('Api\Driver')->prefix('driver')->group(function () {
         Route::get('logout', 'Auth\LoginController@logout');
     });
 });
+Route::get('/syrianPound',function (){
+   $general=gs();
+   return response()->json([
+       'syrian_pound' => $general->syrian_per_dollar
+   ]) ;
+
+});
